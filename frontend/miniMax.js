@@ -1,3 +1,5 @@
+import { aStar } from './aStar.js'
+
 const MAX_DEPTH = 3
 
 export const miniMaxRecursive = (
@@ -8,6 +10,12 @@ export const miniMaxRecursive = (
   layout,
   positions
 ) => {
+  if (sameCoords(positions.ghost, positions.pacman)) {
+    return Number.NEGATIVE_INFINITY
+  }
+  if (sameCoords(positions.goal, positions.pacman))
+    return Number.POSITIVE_INFINITY
+
   if (depth === maxDepth)
     return heuristic(layout, positions)
 
@@ -51,7 +59,7 @@ export const miniMaxRecursive = (
 
 export const miniMax = (layout, positions) => {
   const adjacent = getAdjacent(layout, positions.pacman)
-  // console.log(positions)
+  console.log(positions)
   const miniMaxBound = miniMaxRecursive.bind(
     null,
     0,
@@ -64,6 +72,11 @@ export const miniMax = (layout, positions) => {
     (a, b) =>
       miniMaxBound({ ...positions, pacman: b }) -
       miniMaxBound({ ...positions, pacman: a })
+  )
+  console.log(
+    sortedVals.map((cell) =>
+      miniMaxBound({ ...positions, pacman: cell })
+    )
   )
   console.log(sortedVals)
   return sortedVals[0]
@@ -96,22 +109,21 @@ const getAdjacent = (matrix, cell) => {
 const heuristic = (layout, positions) => {
   const { ghost, pacman, goal } = positions
 
-  if (sameCoords(ghost, pacman)) {
-    return Number.NEGATIVE_INFINITY
-  }
-  if (sameCoords(goal, pacman))
-    return Number.POSITIVE_INFINITY
+  const distToGoal = aStar(
+    layout,
+    { x: pacman.j, y: pacman.i },
+    { x: goal.j, y: goal.i }
+  ).path.length
+  const distToGhost = aStar(
+    layout,
+    { x: pacman.j, y: pacman.i },
+    { x: ghost.j, y: ghost.i }
+  ).path.length
 
-  return (
-    -1 * manhattanDist(pacman, goal) * (Math.random() + 1) +
-    manhattanDist(pacman, ghost) * 3
-  )
+  // console.dir({ distToGhost, distToGoal })
+
+  return -5 * distToGoal + distToGhost * 1
 }
 
 const sameCoords = (cell1, cell2) =>
   cell1.i === cell2.i && cell1.j === cell2.j
-
-const manhattanDist = (cell, destination) =>
-  [cell.i - destination.i, cell.j - destination.j]
-    .map((val) => Math.abs(val) * 10)
-    .reduce((sum, val) => sum + val)

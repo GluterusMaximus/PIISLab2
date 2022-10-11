@@ -55,8 +55,12 @@ export const aStar = (
         continue
 
       if (sameCoords(successor, destination)) {
-        const nextStep = backtrack(successor)
-        return { i: nextStep.y, j: nextStep.x }
+        const path = backtrack(successor)
+        const nextStep = {
+          i: path[path.length - 2].y,
+          j: path[path.length - 2].x,
+        }
+        return { nextStep, path }
       }
 
       // console.dir({ successor })
@@ -129,7 +133,7 @@ const backtrack = (node) => {
   }
 
   // console.log(path)
-  return path[path.length - 2]
+  return path
 }
 
 const manhattanH = (node, destination) =>

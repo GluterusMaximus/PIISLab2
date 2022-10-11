@@ -84,7 +84,7 @@ document.addEventListener('DOMContentLoaded', () => {
       layout,
       { x: ghostPosition.j, y: ghostPosition.i },
       { x: pacmanPosition.j, y: pacmanPosition.i }
-    )
+    ).nextStep
 
     displayCharacter(squares, pacmanPosition, 'pac-man')
     displayCharacter(squares, ghostPosition, 'ghost')
