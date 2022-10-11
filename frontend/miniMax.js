@@ -16,8 +16,13 @@ export const miniMaxRecursive = (
   if (sameCoords(positions.goal, positions.pacman))
     return Number.POSITIVE_INFINITY
 
-  if (depth === maxDepth)
-    return heuristic(layout, positions)
+  if (depth === maxDepth) {
+    try {
+      return heuristic(layout, positions)
+    } catch (error) {
+      return Number.NEGATIVE_INFINITY
+    }
+  }
 
   if (isMax)
     return Math.max(
@@ -108,9 +113,13 @@ const getAdjacent = (matrix, cell) => {
 
 const heuristic = (layout, positions) => {
   const { ghost, pacman, goal } = positions
+  const ghostBlockLayout = JSON.parse(
+    JSON.stringify(layout)
+  )
+  ghostBlockLayout[ghost.i][ghost.j] = 1
 
   const distToGoal = aStar(
-    layout,
+    ghostBlockLayout,
     { x: pacman.j, y: pacman.i },
     { x: goal.j, y: goal.i }
   ).path.length
