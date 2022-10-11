@@ -1,0 +1,31 @@
+.grid {
+  display: flex;
+  flex-wrap: wrap;
+  width: 420px;
+  height: 420px;
+  border: solid black;
+}
+
+.grid div {
+  width: 15px;
+  height: 15px; 
+}
+
+.wall {
+  background-color: blue;
+}
+
+.goal {
+  background-color: green;
+  border-radius: 7px;
+}
+
+.pac-man {
+  background-color: yellow;
+  border-radius: 7px;
+}
+
+
+.ghost {
+  background-color: red;
+}
