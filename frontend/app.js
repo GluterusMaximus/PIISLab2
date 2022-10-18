@@ -1,6 +1,7 @@
 import { layout } from './layout.js'
 import { aStar } from './aStar.js'
 import { miniMax } from './miniMax.js'
+import { alphaBeta } from './alphaBeta.js'
 
 const GRID_SIZE = 28
 const MOVE_INTERVAL_MS = 200
