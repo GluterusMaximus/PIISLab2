@@ -4,6 +4,7 @@ import { miniMax } from './miniMax.js'
 import { alphaBeta } from './alphaBeta.js'
 import { negaMax } from './negaMax.js'
 import { negaPruning } from './negaPruning.js'
+import { negaScout } from './negaScout.js'
 
 const GRID_SIZE = 28
 const MOVE_INTERVAL_MS = 200
@@ -80,7 +81,7 @@ document.addEventListener('DOMContentLoaded', () => {
     removeCharacter(squares, pacmanPosition, 'pac-man')
     removeCharacter(squares, ghostPosition, 'ghost')
 
-    pacmanPosition = negaPruning(layout, {
+    pacmanPosition = negaScout(layout, {
       pacman: pacmanPosition,
       ghost: ghostPosition,
       goal: GOAL_POSITION,
