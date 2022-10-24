@@ -26,25 +26,9 @@ export const negaPruningRecursive = (
     }
 
   if (depth === maxDepth) {
-    try {
-      console.dir({
-        positions,
-        color,
-        alpha,
-        beta,
-        depth,
-        // score: color * heuristic(layout, positions),
-      })
-      return {
-        score: color * heuristic(layout, positions),
-        move: positions.pacman,
-      }
-    } catch (error) {
-      console.error(error)
-      return {
-        score: color * Number.NEGATIVE_INFINITY,
-        move: positions.pacman,
-      }
+    return {
+      score: color * heuristic(layout, positions),
+      move: positions.pacman,
     }
   }
 
@@ -73,17 +57,6 @@ export const negaPruningRecursive = (
     value = Math.max(value, -childScore)
     alpha = Math.max(alpha, value)
 
-    console.dir({
-      alpha,
-      value,
-      bestMove,
-      childMove,
-      childScore: -childScore,
-      beta,
-      depth,
-      positions,
-      color,
-    })
     if (depth === 0) {
       bestMove =
         value === -childScore
@@ -100,8 +73,8 @@ export const negaPruningRecursive = (
   }
 }
 
-export const negaPruning = (layout, positions) => {
-  const { score, move } = negaPruningRecursive(
+export const negaPruning = (layout, positions) =>
+  negaPruningRecursive(
     0,
     Number.NEGATIVE_INFINITY,
     Number.POSITIVE_INFINITY,
@@ -110,40 +83,7 @@ export const negaPruning = (layout, positions) => {
     layout,
     1,
     positions
-  )
-
-  console.log('MOVE!!')
-
-  console.dir({ score, move })
-
-  return move
-}
-// {
-//   const adjacent = getAdjacent(layout, positions.pacman)
-//   console.log(positions)
-//   const negaPruningBound = negaPruningRecursive.bind(
-//     null,
-//     0,
-//     Number.NEGATIVE_INFINITY,
-//     Number.POSITIVE_INFINITY,
-//     MAX_DEPTH,
-//     heuristic,
-//     layout,
-//     -1
-//   )
-//   const sortedVals = adjacent.sort(
-//     (a, b) =>
-//       -1 * negaPruningBound({ ...positions, pacman: b }) -
-//       -1 * negaPruningBound({ ...positions, pacman: a })
-//   )
-//   console.log(
-//     sortedVals.map((cell) =>
-//       negaPruningBound({ ...positions, pacman: cell })
-//     )
-//   )
-//   console.log(sortedVals)
-//   return sortedVals[0]
-// }
+  ).move
 
 const getAdjacent = (matrix, cell) => {
   const adjacent = []
@@ -153,13 +93,6 @@ const getAdjacent = (matrix, cell) => {
   for (let k = 0; k < jShift.length; k++) {
     const newJ = cell.j + jShift[k]
     const newI = cell.i + iShift[k]
-
-    // console.dir({
-    //   cell,
-    //   newJ,
-    //   newI,
-    //   adjacent
-    // })
 
     if (matrix[newI]?.[newJ] === 0) {
       adjacent.push({ i: newI, j: newJ })
@@ -187,15 +120,11 @@ const heuristic = (layout, positions) => {
     distToGoal = 1000
   }
 
-  console.dir({ distToGoal })
   const distToGhost = aStar(
     layout,
     { x: pacman.j, y: pacman.i },
     { x: ghost.j, y: ghost.i }
   ).path.length
-  console.dir({ distToGhost })
-
-  // console.dir({ distToGhost, distToGoal })
 
   return -5 * distToGoal + distToGhost * 1
 }
