@@ -69,6 +69,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const squares = createBoard(layout, grid, squareClasses)
   let pacmanPosition = getRandomPosition(layout)
   let ghostPosition = getRandomPosition(layout)
+  // pacmanPosition = { i: 7, j: 6 }
+  // ghostPosition = { i: 18, j: 6 }
 
   displayCharacter(squares, pacmanPosition, 'pac-man')
   displayCharacter(squares, ghostPosition, 'ghost')
@@ -83,6 +85,7 @@ document.addEventListener('DOMContentLoaded', () => {
       ghost: ghostPosition,
       goal: GOAL_POSITION,
     })
+
     ghostPosition = aStar(
       layout,
       { x: ghostPosition.j, y: ghostPosition.i },
