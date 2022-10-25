@@ -66,7 +66,7 @@ export const negaScoutRecursive = (
           -color,
           { ...positionsCopy, [character]: cell }
         ))
-      if (alpha < -childScore < beta) {
+      if (alpha < -childScore && -childScore < beta) {
         ;({ score: childScore, move: childMove } =
           negaScoutRecursive(
             depth + 1,
